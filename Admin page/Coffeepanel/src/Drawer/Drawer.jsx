@@ -1,0 +1,158 @@
+
+import React from 'react';
+import { styled, extendTheme } from '@mui/material/styles';
+import { useNavigate, useLocation } from 'react-router-dom';
+import DashboardIcon from '@mui/icons-material/Dashboard';
+import BarChartIcon from '@mui/icons-material/BarChart';
+import DescriptionIcon from '@mui/icons-material/Description';
+import { AppProvider } from '@toolpad/core/AppProvider';
+import { DashboardLayout } from '@toolpad/core/DashboardLayout';
+import { PageContainer } from '@toolpad/core/PageContainer';
+import Grid from '@mui/material/Grid2';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import PageRoutes from '../Pages/PageRoutes';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
+import PersonIcon from '@mui/icons-material/Person';
+// Define the theme
+const demoTheme = extendTheme({
+  colorSchemes: { light: true, dark: true },
+  colorSchemeSelector: 'class',
+  breakpoints: {
+    values: {
+      xs: 0,
+      sm: 600,
+      md: 600,
+      lg: 1200,
+      xl: 1536,
+    },
+  },
+});
+
+const Skeleton = styled('div')(({ theme, height }) => ({
+  backgroundColor: theme.palette.action.hover,
+  borderRadius: theme.shape.borderRadius,
+  height,
+  content: '" "',
+}));
+
+function Drawer() {
+  const navigate = useNavigate();
+  const location = useLocation();
+  
+  const NAVIGATION = [
+    {
+      kind: 'header',
+      title: 'Main items',
+    },
+    {
+      segment: 'dashboard',
+      title: 'Dashboard',
+      icon: <DashboardIcon />,
+    },
+    {
+      kind: 'divider',
+    },
+    {
+      kind: 'header',
+      title: 'Analytics',
+    },
+    {
+      segment: 'reports',
+      title: 'Reports',
+      icon: <BarChartIcon />,
+      children: [
+        {
+          segment: 'sales',
+          title: 'Sales',
+          icon: <DescriptionIcon />,
+        },
+        {
+          segment: 'traffic',
+          title: 'Traffic',
+          icon: <DescriptionIcon />,
+        },
+      ],
+    },
+    {
+      segment: 'personnel',
+      title: 'Personnel',
+      icon: <AccountCircleIcon/>,
+      children :[
+
+        {
+          segment: 'CreatePersonnel',
+          title: 'Create Personnel',
+          icon: <PersonAddIcon />,
+        },
+        {
+          segment: 'Manageersonnel',
+          title: 'Manage Personnel',
+          icon: <ManageAccountsIcon />,
+        },
+        {
+          segment: 'Personnelcard',
+          title: 'Personnel Card',
+          icon: <PersonIcon />,
+
+         
+        },
+      ]
+     
+    },
+  ];
+
+  const router = React.useMemo(() => ({
+    pathname: location.pathname,
+    searchParams: new URLSearchParams(location.search),
+    navigate: (path) => navigate(path),
+  }), [location, navigate]);
+
+  return (
+    <AppProvider
+      navigation={NAVIGATION}
+      router={router}
+     
+    >
+      <DashboardLayout>
+        
+          <PageRoutes />
+          <Grid container spacing={1}>
+            <Grid xs={5} />
+            <Grid xs={12}>
+              <Skeleton height={14} />
+            </Grid>
+            <Grid xs={12}>
+              <Skeleton height={14} />
+            </Grid>
+            <Grid xs={4}>
+              <Skeleton height={100} />
+            </Grid>
+            <Grid xs={8}>
+              <Skeleton height={100} />
+            </Grid>
+            <Grid xs={12}>
+              <Skeleton height={150} />
+            </Grid>
+            <Grid xs={12}>
+              <Skeleton height={14} />
+            </Grid>
+            <Grid xs={3}>
+              <Skeleton height={100} />
+            </Grid>
+            <Grid xs={3}>
+              <Skeleton height={100} />
+            </Grid>
+            <Grid xs={3}>
+              <Skeleton height={100} />
+            </Grid>
+            <Grid xs={3}>
+              <Skeleton height={100} />
+            </Grid>
+          </Grid>
+      </DashboardLayout>
+    </AppProvider>
+  );
+}
+
+export default Drawer;
