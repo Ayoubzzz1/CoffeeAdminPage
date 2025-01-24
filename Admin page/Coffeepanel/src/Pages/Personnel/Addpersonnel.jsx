@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import axios from 'axios';
+import toast, { Toaster } from 'react-hot-toast';  // Import react-hot-toast
 
 function AddPersonnel() {
   const [formData, setFormData] = useState({
@@ -10,6 +12,7 @@ function AddPersonnel() {
     age: '',
     gender: '',
     image: null,
+    dateAdded: '', // Adding dateAdded
   });
 
   const handleChange = (e) => {
@@ -22,9 +25,56 @@ function AddPersonnel() {
     setFormData({ ...formData, image: file });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData); // Submit the form data
+
+    // Automatically add the current date when the form is submitted
+    const currentDate = new Date().toISOString();
+    setFormData({ ...formData, dateAdded: currentDate });
+
+    // Convert the image to Base64 before sending it to the backend
+    const imageBase64 = await convertImageToBase64(formData.image);
+
+    // Create form data to send to the Flask server
+    const formDataToSend = {
+      ...formData,
+      image: imageBase64,  // Attach the Base64 encoded image
+    };
+
+    try {
+      const response = await axios.post('http://localhost:5000/api/personnel', formDataToSend);
+      console.log('Personnel added successfully', response.data);
+
+      // Clear the form after successful submission
+      setFormData({
+        firstName: '',
+        lastName: '',
+        jobTitle: '',
+        phone: '',
+        age: '',
+        gender: '',
+        image: null,
+        dateAdded: '',
+      });
+
+      // Show a success notification
+      toast.success('Personnel added successfully!');
+
+    } catch (error) {
+      console.error('Error adding personnel', error);
+      // Show an error notification
+      toast.error('Failed to add personnel!');
+    }
+  };
+
+  // Function to convert image file to Base64
+  const convertImageToBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onloadend = () => resolve(reader.result); // Base64 string
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
   };
 
   return (
@@ -127,6 +177,9 @@ function AddPersonnel() {
 
         <button type="submit" className="btn btn-primary">Submit</button>
       </form>
+
+      {/* Include the Toaster component for React Hot Toast */}
+      <Toaster />
     </div>
   );
 }
