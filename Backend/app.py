@@ -52,44 +52,38 @@ def add_personnel():
 
 @app.route('/api/personnel', methods=['GET'])
 def get_personnel():
-    # SQL query to fetch all personnel from the database
     cursor = mysql.connection.cursor()
-    query = "SELECT firstName, lastName, jobTitle, imageUrl FROM personnel"
+    query = """
+    SELECT firstName, lastName, jobTitle, imageUrl, phone, age, gender 
+    FROM personnel
+    """
     
     try:
         cursor.execute(query)
-        personnel_data = cursor.fetchall()  # Fetch all rows from the query
+        personnel_data = cursor.fetchall()
         
-        # Process the data to return it in a more useful format
         personnel_list = []
         for person in personnel_data:
-            # Assuming imageUrl contains base64 encoded image data
-            image_data = person[3]  # The image URL or Base64 data is the fourth column
+            image_data = person[3]  # imageUrl
             
-            # Verify and clean base64 data if needed
             if image_data:
-                # Remove any data URI prefix if present
+                # Handle base64 image data processing (same as previous code)
                 if image_data.startswith('data:image'):
                     image_data = image_data.split(',')[1]
                 
-                # Ensure the base64 string is valid and has the correct padding
                 missing_padding = len(image_data) % 4
                 if missing_padding:
                     image_data += '=' * (4 - missing_padding)
-                
-                personnel_list.append({
-                    'firstName': person[0],
-                    'lastName': person[1],
-                    'jobTitle': person[2],
-                    'image': image_data  # Send base64 encoded image
-                })
-            else:
-                personnel_list.append({
-                    'firstName': person[0],
-                    'lastName': person[1],
-                    'jobTitle': person[2],
-                    'image': None  # No image available
-                })
+            
+            personnel_list.append({
+                'firstName': person[0],
+                'lastName': person[1],
+                'jobTitle': person[2],
+                'image': image_data,
+                'phone': person[4],
+                'age': person[5],
+                'gender': person[6]
+            })
 
         cursor.close()
         return jsonify(personnel_list), 200
@@ -97,6 +91,6 @@ def get_personnel():
     except Exception as e:
         print(f"Error: {e}")
         return jsonify({"error": "Internal server error"}), 500
-
+    
 if __name__ == '__main__':
     app.run(debug=True)

@@ -1,42 +1,33 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function ManagePersonnel() {
-  const personnelData = [
-    {
-      firstName: 'John',
-      lastName: 'Doe',
-      jobTitle: 'Software Engineer',
-      image: 'https://via.placeholder.com/50',
-      phone: '123-456-7890',
-      age: 30,
-      gender: 'Male',
-    },
-    {
-      firstName: 'Jane',
-      lastName: 'Smith',
-      jobTitle: 'Product Manager',
-      image: 'https://via.placeholder.com/50',
-      phone: '987-654-3210',
-      age: 28,
-      gender: 'Female',
-    },
-    // Add more personnel data as needed
-  ];
+  const [personnelData, setPersonnelData] = useState([]);
+  const [error, setError] = useState(null); // Add error state
 
-  const handleUpdate = (index) => {
-    alert(`Updating personnel at index ${index}`);
-    // Add update logic here (e.g., open a modal or navigate to a new page)
-  };
-
-  const handleDelete = (index) => {
-    alert(`Deleting personnel at index ${index}`);
-    // Add delete logic here (e.g., remove from the array or make an API call)
-  };
+  useEffect(() => {
+    const fetchPersonnelData = async () => {
+      try {
+        const response = await fetch('/api/personnel');
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        const data = await response.json();
+        setPersonnelData(data);
+      } catch (error) {
+        setError(`Error fetching personnel data: ${error.message}`);
+        console.error('Error fetching personnel data:', error);
+      }
+    };
+    
+    
+    fetchPersonnelData();
+  }, []); // Empty dependency array to run only once when the component mounts
 
   return (
     <div className="container mt-5">
       <h2 className="mb-4">Manage Personnel</h2>
+      {error && <div className="alert alert-danger">Error: {error}</div>} {/* Show error message */}
       <table className="table table-striped table-hover table-bordered shadow-sm">
         <thead className="table-dark">
           <tr>
@@ -57,12 +48,16 @@ function ManagePersonnel() {
               <td>{person.lastName}</td>
               <td>{person.jobTitle}</td>
               <td>
-                <img
-                  src={person.image}
-                  alt="Profile"
-                  className="img-fluid rounded-circle"
-                  style={{ width: '50px', height: '50px' }}
-                />
+                {person.image ? (
+                  <img
+                    src={`data:image/jpeg;base64,${person.image}`}
+                    alt="Profile"
+                    className="img-fluid rounded-circle"
+                    style={{ width: '50px', height: '50px' }}
+                  />
+                ) : (
+                  <span>No Image</span>
+                )}
               </td>
               <td>{person.phone}</td>
               <td>{person.age}</td>
