@@ -81,12 +81,12 @@ function Drawer() {
       children :[
 
         {
-          segment: 'CreatePersonnel',
+          segment: 'addpersonnel',
           title: 'Create Personnel',
           icon: <PersonAddIcon />,
         },
         {
-          segment: 'Manageersonnel',
+          segment: 'managepersonnel',
           title: 'Manage Personnel',
           icon: <ManageAccountsIcon />,
         },
