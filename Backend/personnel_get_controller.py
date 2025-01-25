@@ -10,7 +10,7 @@ class PersonnelGetController:
         try:
             cursor = self.mysql.connection.cursor()
             query = """
-            SELECT firstName, lastName, jobTitle, imageUrl, phone, age, gender 
+            SELECT id, firstName, lastName, jobTitle, imageUrl, phone, age, gender 
             FROM personnel
             """
             
@@ -19,7 +19,7 @@ class PersonnelGetController:
             
             personnel_list = []
             for person in personnel_data:
-                image_data = person[3]  # imageUrl
+                image_data = person[4]  # imageUrl (index is now 4 because we added the 'id' field)
                 
                 # Process image data if exists
                 if image_data:
@@ -32,13 +32,14 @@ class PersonnelGetController:
                         image_data += '=' * (4 - missing_padding)
                 
                 personnel_list.append({
-                    'firstName': person[0],
-                    'lastName': person[1],
-                    'jobTitle': person[2],
+                    'id': person[0],  # id is now included in the returned data
+                    'firstName': person[1],
+                    'lastName': person[2],
+                    'jobTitle': person[3],
                     'image': image_data,
-                    'phone': person[4],
-                    'age': person[5],
-                    'gender': person[6]
+                    'phone': person[5],
+                    'age': person[6],
+                    'gender': person[7]
                 })
 
             cursor.close()
