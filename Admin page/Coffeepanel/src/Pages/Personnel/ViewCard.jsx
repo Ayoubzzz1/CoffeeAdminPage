@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';  // Import useParams to get the ID from the URL
+import { useParams } from 'react-router-dom';
 
 function ViewCard() {
-  const { id } = useParams();  // Get the ID from the URL
+  const { id } = useParams();
   const [person, setPerson] = useState(null);
-  const [loading, setLoading] = useState(true);  // Track loading state
-  const [error, setError] = useState(null);  // Track errors
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchPersonData = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/personnell/${id}`);
+        const response = await axios.get(`http://localhost:5000/api/personnel/${id}`);
         if (response.status === 200 && response.data) {
-          setPerson(response.data);  // Set person data if successful
+          setPerson(response.data);
         } else {
           setError("Person not found");
         }
@@ -21,16 +21,16 @@ function ViewCard() {
         console.error('Error fetching person data:', error);
         setError("Failed to load person data");
       } finally {
-        setLoading(false);  // Set loading to false after the fetch completes
+        setLoading(false);
       }
     };
-    
+
     fetchPersonData();
-  }, [id]);  // Re-fetch data if the ID changes
+  }, [id]);
 
-  if (loading) return <div>Loading...</div>;  // Show loading while data is being fetched
+  if (loading) return <div>Loading...</div>;
 
-  if (error) return <div>{error}</div>;  // Show error message if an error occurred
+  if (error) return <div>{error}</div>;
 
   return (
     <div className="container mt-5">

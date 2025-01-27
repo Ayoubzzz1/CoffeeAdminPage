@@ -13,7 +13,7 @@ function PageRoutes() {
       <Route path="/personnel/managepersonnel" element={<Managepersonnel />} />
       
       {/* Route for the ViewCard component to display individual personnel details */}
-      <Route path="/personnel/view/:id" element={<ViewCard />} />
+      <Route path="/personnel/View/:id" element={<ViewCard />} />
       {/* This route will match /personnel/view/:id and display the ViewCard component */}
     </Routes>
   );

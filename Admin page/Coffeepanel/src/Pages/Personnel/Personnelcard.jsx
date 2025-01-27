@@ -27,14 +27,14 @@ function PersonnelCard() {
     }
   };
 
-  const handleShowMoreClick = (e, id) => {
-    e.stopPropagation();  // Prevent the card click from being triggered
-    if (id) {
-      navigate(`/personnel/view/${id}`);
-    } else {
-      console.error("Invalid ID");
-    }
-  };
+  // const handleShowMoreClick = (e, id) => {
+  //   e.stopPropagation();  // Prevent the card click from being triggered
+  //   if (id) {
+  //     navigate(`/personnel/View/${id}`);
+  //   } else {
+  //     console.error("Invalid ID");
+  //   }
+  // };
 
   return (
     <div className="container mt-5">
