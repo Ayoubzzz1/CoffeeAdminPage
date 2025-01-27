@@ -3,10 +3,12 @@ import MySQLdb
 from flask import Flask, jsonify, request
 from flask_mysqldb import MySQL
 from flask_cors import CORS
-
+import json
+import os
 app = Flask(__name__)
+app.config['MAX_CONTENT_LENGTH'] = 10 * 1024 * 1024  # 10 MB
 CORS(app, origins="http://localhost:5173", methods=["GET", "POST", "DELETE", "PUT", "OPTIONS"])
-
+CATEGORIES_FILE = os.path.join(os.getcwd(), 'categories.json')
 # Database configuration
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
@@ -65,6 +67,36 @@ def get_all_menu_items():
     return get_menu_items_controller.get_all_menu_items() 
 
   
+
+@app.route('/api/categories', methods=['GET'])
+def get_categories():
+    try:
+        cursor = mysql.connection.cursor()
+        cursor.execute("SELECT name FROM categories")
+        categories = [row[0] for row in cursor.fetchall()]
+        cursor.close()
+        return jsonify(categories)
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+@app.route('/api/categories', methods=['POST'])
+def add_category():
+    data = request.json
+    new_category = data.get('category')
+
+    if not new_category:
+        return jsonify({'error': 'Category is required'}), 400
+
+    try:
+        cursor = mysql.connection.cursor()
+        cursor.execute("INSERT IGNORE INTO categories (name) VALUES (%s)", (new_category,))
+        mysql.connection.commit()
+        cursor.close()
+
+        # Return the updated list of categories
+        return get_categories()
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
 
 if __name__ == '__main__':
     app.run(debug=True)
