@@ -39,7 +39,7 @@ class PersonnelPostController:
             # Create cursor and execute insert
             cursor = self.mysql.connection.cursor()
             query = """
-                INSERT INTO personnel (firstName, lastName, jobTitle, phone, age, gender, dateAdded, imageUrl)
+                INSERT INTO personnel (firstName, lastName, jobTitle, phone, age, gender, date_added, imageUrl)
                 VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
             """
             

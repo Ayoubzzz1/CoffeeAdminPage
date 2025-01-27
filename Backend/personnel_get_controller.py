@@ -1,5 +1,6 @@
 from flask import jsonify
 from flask_mysqldb import MySQL
+from flask import jsonify
 
 class PersonnelGetController:
     def __init__(self, mysql):

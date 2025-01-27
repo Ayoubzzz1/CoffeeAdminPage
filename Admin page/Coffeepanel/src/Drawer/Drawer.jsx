@@ -14,6 +14,14 @@ import PageRoutes from '../Pages/PageRoutes';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import PersonIcon from '@mui/icons-material/Person';
+import MenuIcon  from '@mui/icons-material/RestaurantMenu';
+import MoreVertIcon   from '@mui/icons-material/RestaurantMenu';
+import CoffeeIcon   from '@mui/icons-material/RestaurantMenu';
+import FoodBankIcon from '@mui/icons-material/FoodBank';
+import ImportContactsIcon from '@mui/icons-material/ImportContacts';
+import NoteAddIcon from '@mui/icons-material/NoteAdd';
+import ChairIcon from '@mui/icons-material/Chair';
+import BookOnlineIcon from '@mui/icons-material/BookOnline';
 // Define the theme
 const demoTheme = extendTheme({
   colorSchemes: { light: true, dark: true },
@@ -98,7 +106,53 @@ function Drawer() {
          
         },
       ]
+      
      
+    },
+    {
+      segment: 'menu',
+      title: 'Menu',
+      icon: <ImportContactsIcon />,
+      children :[
+        {
+          segment: 'addmenu',
+          title: 'Add Menu',
+          icon: <NoteAddIcon />,
+        },
+        {
+          segment: 'managemenu',
+          title: 'Manage Menu',
+          icon: <MenuIcon />,
+
+         
+        },
+        {
+          segment: 'menuitems',
+          title: 'MenuShow',
+          icon: <FoodBankIcon  />,
+        },
+    
+    
+      ]
+    },
+    {
+      segment: 'booking',
+      title: 'Booking',
+      icon: <ChairIcon />,
+      children :[
+        {
+          segment: 'bookingshow',
+          title: 'Booking Show',
+          icon: <BookOnlineIcon />,
+        },
+       
+        {
+          segment: 'bookinguser',
+          title: 'Booking User',
+          icon: <BookOnlineIcon />,
+        },
+    
+      ]
     },
   ];
 
