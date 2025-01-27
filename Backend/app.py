@@ -1,3 +1,5 @@
+import base64
+import MySQLdb
 from flask import Flask, jsonify, request
 from flask_mysqldb import MySQL
 from flask_cors import CORS
@@ -20,13 +22,16 @@ from personnel_post_controller import PersonnelPostController
 from personnel_delete_controller import PersonnelDeleteController  # New import
 from personnel_get_controller_by_id import PersonnelGetControllerById
 from personnel_update_controller import PersonnelUpdateController
+from menu_items_controller import MenuItemsController
+from get_all_menu_items import GetMenuItemsController
 # Initialize controllers
 get_controller = PersonnelGetController(mysql)
 post_controller = PersonnelPostController(mysql)
 delete_controller = PersonnelDeleteController(mysql)  # New controller initialization
 get_controller_by_id = PersonnelGetControllerById(mysql)
 update_controller = PersonnelUpdateController(mysql)
-
+menu_items_controller = MenuItemsController(mysql)
+get_menu_items_controller = GetMenuItemsController(mysql)
 # Register routes
 @app.route('/api/personnel', methods=['GET'])
 def get_all_personnel():
@@ -51,7 +56,15 @@ def update_personnel(id):
     data = request.get_json()
     return update_controller.update_personnel(id, data)
 
+@app.route('/api/menuitems', methods=['POST'])
+def add_menu_item():
+    return menu_items_controller.add_menu_item()
 
+@app.route('/api/menuitems', methods=['GET'])
+def get_all_menu_items():
+    return get_menu_items_controller.get_all_menu_items() 
+
+  
 
 if __name__ == '__main__':
     app.run(debug=True)
