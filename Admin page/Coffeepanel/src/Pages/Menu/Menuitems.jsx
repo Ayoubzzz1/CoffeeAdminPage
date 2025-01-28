@@ -298,7 +298,7 @@ function Menuitems() {
         )}
 
         <FormGroup>
-          <Label for="image">Image (Max 500KB after compression)</Label>
+          <Label for="image">Image</Label>
           <Input 
             type="file" 
             id="image" 

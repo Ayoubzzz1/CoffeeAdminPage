@@ -53,7 +53,7 @@ def delete_personnel(id):
 def get_personnel_by_id(id):
     return get_controller_by_id.get_personnel_by_id(id)
 
-@app.route('/api/personnel/view/<int:id>', methods=['PUT'])
+@app.route('/api/personnel/<int:id>', methods=['PUT'])
 def update_personnel(id):
     data = request.get_json()
     return update_controller.update_personnel(id, data)
