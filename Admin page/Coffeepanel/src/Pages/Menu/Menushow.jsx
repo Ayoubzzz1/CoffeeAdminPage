@@ -1,23 +1,32 @@
-import React, { useState, useEffect } from 'react';
-import { Card, CardBody, CardTitle, CardText, CardSubtitle, CardImg, Row, Col } from 'reactstrap';
+import React, { useState, useEffect } from "react";
+import {
+  Card,
+  CardBody,
+  CardTitle,
+  CardText,
+  CardSubtitle,
+  CardImg,
+  Row,
+  Col,
+} from "reactstrap";
+import "./menushpw.css";
 
-function Menushow() {
+function MenuShow() {
   const [menuItems, setMenuItems] = useState([]);
 
-  // Fetch data from the backend
   useEffect(() => {
     const fetchMenuItems = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/menuitems');
+        const response = await fetch("http://localhost:5000/api/menuitems");
         if (response.ok) {
           const data = await response.json();
-          setMenuItems(data); // Use the data directly since it's already the array of menu items
+          setMenuItems(data);
         } else {
-          alert('Failed to load menu items');
+          alert("Failed to load menu items");
         }
       } catch (error) {
-        console.error('Error:', error);
-        alert('An error occurred while fetching the menu items');
+        console.error("Error:", error);
+        alert("An error occurred while fetching the menu items");
       }
     };
 
@@ -25,49 +34,37 @@ function Menushow() {
   }, []);
 
   return (
-    <div className="container mt-4">
-      <h2 className="mb-4">Menu Items</h2>
-      <Row>
+    <div className="menu-container">
+      <h2 className="menu-title">Menu Items</h2>
+      <div className="menu-grid">
         {menuItems.length > 0 ? (
           menuItems.map((item) => (
-            <Col md="4" className="mb-4" key={item.id}>
-              <Card>
-                {item.image && (
-                  <CardImg
-                    top
-                    width="100%"
-                    src={`data:image/jpeg;base64,${item.image}`} // Assuming image is base64-encoded
-                    alt={item.name}
-                    className="img-fluid"
-                  />
-                )}
-                <CardBody>
-                  <CardTitle tag="h5">{item.name}</CardTitle>
-                  <CardSubtitle tag="h6" className="mb-2 text-muted">{item.category}</CardSubtitle>
-                  <CardText>
-                    <strong>Name:</strong> {item.name}
-                  </CardText>
-                  <CardText>
-                    <strong>Category:</strong> {item.category}
-                  </CardText>
-                  <CardText>
-                    <strong>Description:</strong> {item.description}
-                  </CardText>
-                  <CardText>
-                    <strong>Price:</strong> ${item.price}
-                  </CardText>
-                </CardBody>
-              </Card>
-            </Col>
+            <Card key={item.id} className="menu-card">
+              {item.image && (
+                <CardImg
+                  top
+                  src={`data:image/jpeg;base64,${item.image}`}
+                  alt={item.name}
+                  className="menu-card-img"
+                />
+              )}
+              <CardBody className="menu-card-body">
+                <CardTitle className="menu-card-title">{item.name}</CardTitle>
+                <CardSubtitle className="menu-card-category">
+                  {item.category}
+                </CardSubtitle>
+                <CardText className="menu-card-price">
+                  ${item.price}
+                </CardText>
+              </CardBody>
+            </Card>
           ))
         ) : (
-          <Col>
-            <p>No menu items found.</p>
-          </Col>
+          <p>No menu items found.</p>
         )}
-      </Row>
+      </div>
     </div>
   );
 }
 
-export default Menushow;
+export default MenuShow;
