@@ -50,16 +50,17 @@ function PersonnelCard() {
               }}
               onClick={() => handleCardClick(person.id)}  // Click on the card to navigate
             >
-              <img
-                src={person.image ? `data:image/jpeg;base64,${person.image}` : "https://via.placeholder.com/150"}
-                className="card-img-top"
-                alt="Profile"
-                style={{
-                  transition: 'transform 0.3s ease',
-                  objectFit: 'cover',
-                  height: '200px',
-                }}
-              />
+          <img
+  src={person.image ? `data:image/jpeg;base64,${person.image}` : "https://via.placeholder.com/150"}
+  className="card-img-top"
+  alt="Profile"
+  style={{
+    transition: 'transform 0.3s ease',
+    objectFit: 'cover',
+    height: '200px',
+  }}
+/>
+
               <div className="card-body">
                 <h5 className="card-title">{person.firstName} {person.lastName}</h5>
                 <p className="card-text">{person.jobTitle}</p>

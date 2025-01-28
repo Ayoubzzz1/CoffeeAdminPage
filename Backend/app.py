@@ -234,35 +234,6 @@ def save_attendance():
 
 
 
-@app.route('/api/attendance/<int:personnel_id>', methods=['GET'])
-def get_attendance(personnel_id):
-    try:
-        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        
-        # Get attendance records with salary information from personnel table
-        cursor.execute("""
-            SELECT 
-                DATE_FORMAT(a.attendance_date, '%%Y-%%m-%%d') as attendance_date,
-                a.status,
-                p.salary_per_day,
-                CASE 
-                    WHEN a.status = 'Present' THEN p.salary_per_day
-                    ELSE 0.00
-                END as total_salary
-            FROM attendance a
-            INNER JOIN personnel p ON a.personnel_id = p.id
-            WHERE a.personnel_id = %s
-            ORDER BY a.attendance_date DESC
-        """, (personnel_id,))
-        
-        attendance_records = cursor.fetchall()
-        
-        cursor.close()
-        return jsonify(attendance_records)
-        
-    except Exception as e:
-        print(f"Error fetching attendance: {str(e)}")
-        return jsonify({'error': f'Failed to fetch attendance records: {str(e)}'}), 500
 
 
 if __name__ == '__main__':

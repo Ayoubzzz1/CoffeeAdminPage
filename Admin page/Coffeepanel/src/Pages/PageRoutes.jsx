@@ -10,6 +10,7 @@ import Menuitems from './Menu/Menuitems';
 import Menushow from './Menu/Menushow';
 import Managemenu from './Menu/Managemenu';
 import Personneldate from './Personnel/Personneldate';
+import Login from './Auth/Login';
 function PageRoutes() {
   return (
     <Routes>
@@ -17,6 +18,8 @@ function PageRoutes() {
       <Route path="/personnel/addpersonnel" element={<Addpersonnel />} />
       <Route path="/personnel/editepersonnel/managepersonnel" element={<Managepersonnel />} />
       <Route path="/personnel/editepersonnel/Personneldate" element={<Personneldate />} />
+      <Route path="/login" element={<Login />} />
+
 
       
       {/* Route for the ViewCard component to display individual personnel details */}

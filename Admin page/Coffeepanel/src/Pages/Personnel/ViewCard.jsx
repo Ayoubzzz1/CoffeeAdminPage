@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
+import Calendar from 'react-calendar';
+import 'react-calendar/dist/Calendar.css';
 
 function ViewCard() {
   const { id } = useParams();
@@ -49,92 +51,133 @@ function ViewCard() {
     return Number(amount).toFixed(2);
   };
 
+  // Helper function to format the date without time for comparison
+  const formatDateForComparison = (date) => {
+    return date.toISOString().split('T')[0]; // YYYY-MM-DD
+  };
+
+  // Create a map for attendance status
+  const getAttendanceStatus = (date) => {
+    const formattedDate = formatDateForComparison(date);
+    const attendanceRecord = attendance.find((record) => {
+      const recordDate = new Date(record.attendance_date);
+      const formattedRecordDate = formatDateForComparison(recordDate);
+      return formattedRecordDate === formattedDate;
+    });
+
+    if (attendanceRecord) {
+      return attendanceRecord.status === 'Present' ? 'green' : 'red';
+    }
+
+    return null; // No record for that day
+  };
+
+  const tileClassName = ({ date, view }) => {
+    if (view === 'month') {
+      const status = getAttendanceStatus(date);
+      if (status === 'green') {
+        return 'bg-success text-white'; // green background for present
+      }
+      if (status === 'red') {
+        return 'bg-danger text-white'; // red background for absent
+      }
+    }
+    return '';
+  };
+
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="text-xl">Loading...</div>
+      <div className="d-flex justify-content-center align-items-center min-vh-100">
+        <div className="fs-3">Loading...</div>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="text-xl text-red-600">{error}</div>
+      <div className="d-flex justify-content-center align-items-center min-vh-100">
+        <div className="fs-3 text-danger">{error}</div>
       </div>
     );
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container py-5">
       {/* Personnel Information */}
-      <div className="bg-white rounded-lg shadow-md p-6 mb-8">
-        <h2 className="text-2xl font-bold mb-4">
-          {person.firstName} {person.lastName}
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <p className="mb-2"><strong>Job Title:</strong> {person.jobTitle}</p>
-            <p className="mb-2"><strong>Phone:</strong> {person.phone}</p>
-            <p className="mb-2"><strong>Age:</strong> {person.age}</p>
-            <p className="mb-2"><strong>Gender:</strong> {person.gender}</p>
-          </div>
-          <div className="flex justify-center md:justify-end">
-            {person.image ? (
-              <img 
-                src={`data:image/jpeg;base64,${person.image}`} 
-                alt="Profile" 
-                className="w-48 h-48 object-cover rounded-lg shadow"
+      <div className="card mb-5">
+        <div className="card-body">
+          <h2 className="card-title">{person.firstName} {person.lastName}</h2>
+          <div className="row">
+            <div className="col-md-6">
+              <p><strong>Job Title:</strong> {person.jobTitle}</p>
+              <p><strong>Phone:</strong> {person.phone}</p>
+              <p><strong>Age:</strong> {person.age}</p>
+              <p><strong>Gender:</strong> {person.gender}</p>
+            </div>
+            <div className="col-md-6 d-flex justify-content-center">
+            <img
+                src={person.image ? `data:image/jpeg;base64,${person.image}` : "https://via.placeholder.com/150"}
+                className="card-img-top"
+                alt="Profile"
+                style={{
+                  transition: 'transform 0.3s ease',
+                  objectFit: 'cover',
+                  height: '200px',
+                }}
               />
-            ) : (
-              <div className="w-48 h-48 bg-gray-200 rounded-lg flex items-center justify-center">
-                No image available
-              </div>
-            )}
+            </div>
           </div>
         </div>
       </div>
 
+      {/* Attendance Calendar */}
+      <div className="card mb-5">
+        <div className="card-body">
+          <h3 className="card-title">Attendance Calendar</h3>
+          <Calendar
+            tileClassName={tileClassName}
+            view="month"
+            locale="en-US"
+          />
+        </div>
+      </div>
+
       {/* Attendance History */}
-      <div className="bg-white rounded-lg shadow-md p-6">
-        <h3 className="text-xl font-bold mb-4">Attendance History</h3>
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead>
-              <tr className="bg-gray-50">
-                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600">Date</th>
-                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600">Status</th>
-                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600">Salary Per Day</th>
-                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600">Total Salary</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-200">
-              {attendance.length > 0 ? (
-                attendance.map((record, index) => (
-                  <tr key={index} className="hover:bg-gray-50">
-                    <td className="px-6 py-4 text-sm">{formatDate(record.attendance_date)}</td>
-                    <td className="px-6 py-4">
-                      <span className={`px-2 py-1 rounded-full text-sm ${
-                        record.status === 'Present' 
-                          ? 'bg-green-100 text-green-800'
-                          : 'bg-red-100 text-red-800'
-                      }`}>
-                        {record.status}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4 text-sm">${formatCurrency(person.salary_per_day)}</td>
-                    <td className="px-6 py-4 text-sm">${formatCurrency(person.total_salary)}</td>
-                  </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan="4" className="px-6 py-4 text-center text-gray-500">
-                    No attendance records found
-                  </td>
+      <div className="card">
+        <div className="card-body">
+          <h3 className="card-title">Attendance History</h3>
+          <div className="table-responsive">
+            <table className="table table-bordered">
+              <thead>
+                <tr className="table-secondary">
+                  <th>Date</th>
+                  <th>Status</th>
+                  <th>Salary Per Day</th>
+                  <th>Total Salary</th>
                 </tr>
-              )}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {attendance.length > 0 ? (
+                  attendance.map((record, index) => (
+                    <tr key={index}>
+                      <td>{formatDate(record.attendance_date)}</td>
+                      <td>
+                        <span className={`badge ${record.status === 'Present' ? 'bg-success' : 'bg-danger'}`}>
+                          {record.status}
+                        </span>
+                      </td>
+                      <td>${formatCurrency(person.salary_per_day)}</td>
+                      <td>${formatCurrency(person.total_salary)}</td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="4" className="text-center text-muted">No attendance records found</td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
