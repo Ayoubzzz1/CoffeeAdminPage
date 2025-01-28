@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios';
-import toast, { Toaster } from 'react-hot-toast';  // Import react-hot-toast
+import toast, { Toaster } from 'react-hot-toast';
 
 function AddPersonnel() {
   const [formData, setFormData] = useState({
@@ -12,7 +12,9 @@ function AddPersonnel() {
     age: '',
     gender: '',
     image: null,
-    dateAdded: '', // Adding dateAdded
+    dateAdded: '',
+    salaryTotal: '',    // Added new field
+    salaryPerDay: ''    // Added new field
   });
 
   const handleChange = (e) => {
@@ -28,20 +30,29 @@ function AddPersonnel() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Automatically add the current date when the form is submitted
+    // Validate salary fields
+    if (!formData.salaryTotal || formData.salaryTotal <= 0) {
+      toast.error('Please enter a valid total salary');
+      return;
+    }
+    if (!formData.salaryPerDay || formData.salaryPerDay <= 0) {
+      toast.error('Please enter a valid salary per day');
+      return;
+    }
+
     const currentDate = new Date().toISOString();
     setFormData({ ...formData, dateAdded: currentDate });
 
-    // Convert the image to Base64 before sending it to the backend
-    const imageBase64 = await convertImageToBase64(formData.image);
-
-    // Create form data to send to the Flask server
-    const formDataToSend = {
-      ...formData,
-      image: imageBase64,  // Attach the Base64 encoded image
-    };
-
     try {
+      const imageBase64 = await convertImageToBase64(formData.image);
+
+      const formDataToSend = {
+        ...formData,
+        image: imageBase64,
+        total_salary: Number(formData.salaryTotal),
+        salary_per_day: Number(formData.salaryPerDay)
+      };
+
       const response = await axios.post('http://localhost:5000/api/personnel', formDataToSend);
       console.log('Personnel added successfully', response.data);
 
@@ -55,23 +66,21 @@ function AddPersonnel() {
         gender: '',
         image: null,
         dateAdded: '',
+        salaryTotal: '',
+        salaryPerDay: ''
       });
 
-      // Show a success notification
       toast.success('Personnel added successfully!');
-
     } catch (error) {
       console.error('Error adding personnel', error);
-      // Show an error notification
       toast.error('Failed to add personnel!');
     }
   };
 
-  // Function to convert image file to Base64
   const convertImageToBase64 = (file) => {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
-      reader.onloadend = () => resolve(reader.result); // Base64 string
+      reader.onloadend = () => resolve(reader.result);
       reader.onerror = reject;
       reader.readAsDataURL(file);
     });
@@ -81,6 +90,7 @@ function AddPersonnel() {
     <div className="container mt-5">
       <h2>Add Personnel</h2>
       <form onSubmit={handleSubmit}>
+        {/* Existing form fields */}
         <div className="mb-3">
           <label htmlFor="firstName" className="form-label">First Name</label>
           <input
@@ -146,6 +156,39 @@ function AddPersonnel() {
           />
         </div>
 
+        {/* Added new salary fields */}
+        <div className="mb-3">
+          <label htmlFor="salaryTotal" className="form-label">Salary Total:</label>
+          <input
+            type="number"
+            className="form-control"
+            id="salaryTotal"
+            name="salaryTotal"
+            value={formData.salaryTotal}
+            onChange={handleChange}
+            placeholder="Enter total salary"
+            min="0"
+            step="0.01"
+            required
+          />
+        </div>
+
+        <div className="mb-3">
+          <label htmlFor="salaryPerDay" className="form-label">Salary Per Day:</label>
+          <input
+            type="number"
+            className="form-control"
+            id="salaryPerDay"
+            name="salaryPerDay"
+            value={formData.salaryPerDay}
+            onChange={handleChange}
+            placeholder="Enter salary per day"
+            min="0"
+            step="0.01"
+            required
+          />
+        </div>
+
         <div className="mb-3">
           <label htmlFor="gender" className="form-label">Gender</label>
           <select
@@ -178,7 +221,6 @@ function AddPersonnel() {
         <button type="submit" className="btn btn-primary">Submit</button>
       </form>
 
-      {/* Include the Toaster component for React Hot Toast */}
       <Toaster />
     </div>
   );

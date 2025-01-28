@@ -1,10 +1,13 @@
 import base64
+from datetime import datetime
 import MySQLdb
 from flask import Flask, jsonify, request
 from flask_mysqldb import MySQL
 from flask_cors import CORS
 import json
 import os
+from sqlalchemy.exc import SQLAlchemyError
+from sqlalchemy import text
 app = Flask(__name__)
 app.config['MAX_CONTENT_LENGTH'] = 10 * 1024 * 1024  # 10 MB
 CORS(app, origins="http://localhost:5173", methods=["GET", "POST", "DELETE", "PUT", "OPTIONS"])
@@ -143,6 +146,123 @@ def get_table_positions():
         return jsonify(positions)
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+
+
+
+
+@app.route('/attendance', methods=['POST'])
+def save_attendance():
+    try:
+        # Parse incoming JSON data
+        data = request.json
+        print("Received data:", data)
+
+        # Validate required fields
+        required_fields = ['personnel_name', 'attendance_date', 'status']
+        for field in required_fields:
+            if field not in data or data[field] == '':
+                return jsonify({'error': f'{field} is required'}), 400
+
+        # Extract and parse data
+        personnel_name = data['personnel_name']
+        
+        # Parse date
+        try:
+            attendance_date = datetime.strptime(data['attendance_date'], '%Y-%m-%d')
+        except ValueError as e:
+            return jsonify({'error': f'Invalid date format: {str(e)}'}), 400
+
+        status = data['status']
+        
+       
+
+        # Create cursor
+        cursor = mysql.connection.cursor()
+        
+        # Find personnel ID
+        cursor.execute("""
+            SELECT id 
+            FROM personnel 
+            WHERE CONCAT(firstName, ' ', lastName) = %s
+        """, (personnel_name,))
+        
+        result = cursor.fetchone()
+        
+        if not result:
+            cursor.close()
+            return jsonify({'error': f'Personnel not found: {personnel_name}'}), 404
+
+        personnel_id = result[0]
+
+        # Insert attendance record
+        cursor.execute("""
+            INSERT INTO attendance 
+            (personnel_id, attendance_date, status) 
+            VALUES (%s, %s, %s)
+        """, (
+            personnel_id,
+            attendance_date,
+            status
+           
+        ))
+
+        # Commit the transaction
+        mysql.connection.commit()
+        
+        # Get the ID of the inserted record
+        attendance_id = cursor.lastrowid
+        
+        # Close the cursor
+        cursor.close()
+
+        return jsonify({
+            'message': 'Attendance record saved successfully',
+            'attendance_id': attendance_id
+        }), 201
+
+    except MySQLdb.Error as e:
+        print(f"Database error: {str(e)}")
+        return jsonify({'error': 'Database error occurred'}), 500
+    except Exception as e:
+        print(f"Unexpected error: {str(e)}")
+        return jsonify({'error': str(e)}), 500
+    
+
+
+
+
+
+
+
+@app.route('/api/attendance/<int:personnel_id>', methods=['GET'])
+def get_attendance(personnel_id):
+    try:
+        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        
+        # Get attendance records with salary information from personnel table
+        cursor.execute("""
+            SELECT 
+                DATE_FORMAT(a.attendance_date, '%%Y-%%m-%%d') as attendance_date,
+                a.status,
+                p.salary_per_day,
+                CASE 
+                    WHEN a.status = 'Present' THEN p.salary_per_day
+                    ELSE 0.00
+                END as total_salary
+            FROM attendance a
+            INNER JOIN personnel p ON a.personnel_id = p.id
+            WHERE a.personnel_id = %s
+            ORDER BY a.attendance_date DESC
+        """, (personnel_id,))
+        
+        attendance_records = cursor.fetchall()
+        
+        cursor.close()
+        return jsonify(attendance_records)
+        
+    except Exception as e:
+        print(f"Error fetching attendance: {str(e)}")
+        return jsonify({'error': f'Failed to fetch attendance records: {str(e)}'}), 500
 
 
 if __name__ == '__main__':

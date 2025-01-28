@@ -12,7 +12,7 @@ class PersonnelPostController:
             data = request.json
             
             # Validate required fields
-            required_fields = ['firstName', 'lastName', 'jobTitle', 'phone', 'age', 'gender', 'image']
+            required_fields = ['firstName', 'lastName', 'jobTitle', 'phone', 'age', 'gender', 'image', 'total_salary', 'salary_per_day']
             for field in required_fields:
                 if field not in data:
                     return jsonify({"error": f"Missing required field: {field}"}), 400
@@ -24,6 +24,8 @@ class PersonnelPostController:
             phone = data['phone']
             age = data['age']
             gender = data['gender']
+            salary_total = data['total_salary']  # New field
+            salary_per_day = data['salary_per_day']  # New field
             date_added = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
             
             # Process image data
@@ -39,11 +41,11 @@ class PersonnelPostController:
             # Create cursor and execute insert
             cursor = self.mysql.connection.cursor()
             query = """
-                INSERT INTO personnel (firstName, lastName, jobTitle, phone, age, gender, date_added, imageUrl)
-                VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+                INSERT INTO personnel (firstName, lastName, jobTitle, phone, age, gender, date_added, imageUrl, total_salary, salary_per_day)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
             """
             
-            cursor.execute(query, (first_name, last_name, job_title, phone, age, gender, date_added, image_data))
+            cursor.execute(query, (first_name, last_name, job_title, phone, age, gender, date_added, image_data, salary_total, salary_per_day))
             self.mysql.connection.commit()
             cursor.close()
 
