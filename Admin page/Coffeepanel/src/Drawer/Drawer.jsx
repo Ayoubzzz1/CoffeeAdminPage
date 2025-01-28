@@ -22,6 +22,8 @@ import ImportContactsIcon from '@mui/icons-material/ImportContacts';
 import NoteAddIcon from '@mui/icons-material/NoteAdd';
 import ChairIcon from '@mui/icons-material/Chair';
 import BookOnlineIcon from '@mui/icons-material/BookOnline';
+import PermContactCalendarIcon from '@mui/icons-material/PermContactCalendar';
+import PersonSearchIcon from '@mui/icons-material/PersonSearch';
 // Define the theme
 const demoTheme = extendTheme({
   colorSchemes: { light: true, dark: true },
@@ -94,9 +96,26 @@ function Drawer() {
           icon: <PersonAddIcon />,
         },
         {
-          segment: 'managepersonnel',
+          segment: 'editepersonnel',
           title: 'Manage Personnel',
           icon: <ManageAccountsIcon />,
+          children:[
+            {
+              segment: 'managepersonnel',
+              title: 'Manage Personnel',
+              icon: <PersonIcon />,
+    
+             
+            },
+            {
+              segment: 'Personneldate',
+              title: 'Personnel Stat',
+              icon: <PersonSearchIcon />,
+    
+             
+            },
+
+          ]
         },
         {
           segment: 'Personnelcard',

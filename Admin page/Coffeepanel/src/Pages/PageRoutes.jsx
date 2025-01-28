@@ -9,12 +9,15 @@ import Bookinguser from './Booking/Bookinguser';
 import Menuitems from './Menu/Menuitems';
 import Menushow from './Menu/Menushow';
 import Managemenu from './Menu/Managemenu';
+import Personneldate from './Personnel/Personneldate';
 function PageRoutes() {
   return (
     <Routes>
       <Route path="/personnel/personnelcard" element={<Personnelcard />} />
       <Route path="/personnel/addpersonnel" element={<Addpersonnel />} />
-      <Route path="/personnel/managepersonnel" element={<Managepersonnel />} />
+      <Route path="/personnel/editepersonnel/managepersonnel" element={<Managepersonnel />} />
+      <Route path="/personnel/editepersonnel/Personneldate" element={<Personneldate />} />
+
       
       {/* Route for the ViewCard component to display individual personnel details */}
       <Route path="/personnel/View/:id" element={<ViewCard />} />

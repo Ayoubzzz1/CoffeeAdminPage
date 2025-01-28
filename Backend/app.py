@@ -97,6 +97,53 @@ def add_category():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
+@app.route('/api/saveTablePositions', methods=['POST'])
+def save_table_positions():
+    data = request.json
+    tables = data.get('tables')
+
+    cursor = mysql.connection.cursor()
+
+    for table in tables:
+        cursor.execute("""
+            INSERT INTO table_positions (table_id, seats, x_position, y_position)
+            VALUES (%s, %s, %s, %s)
+        """, (table['id'], table['seats'], table['x_position'], table['y_position']))
+    
+    mysql.connection.commit()
+    cursor.close()
+
+    return jsonify({'message': 'Table positions saved successfully'}), 200
+
+    
+    conn.commit()
+    cursor.close()
+    conn.close()
+
+    return jsonify({'message': 'Table positions saved successfully'}), 200
+
+
+@app.route('/api/tablePositions', methods=['GET'])
+def get_table_positions():
+    try:
+        # Retrieve table positions from the database
+        table_positions = TablePosition.query.all() # type: ignore
+        
+        # Prepare a list of positions to return
+        positions = []
+        for position in table_positions:
+            positions.append({
+                'id': position.id,
+                'table_id': position.table_id,
+                'seats': position.seats,
+                'x_position': position.x_position,
+                'y_position': position.y_position,
+            })
+        
+        return jsonify(positions)
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
 
 if __name__ == '__main__':
     app.run(debug=True)

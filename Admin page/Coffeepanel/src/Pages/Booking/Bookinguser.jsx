@@ -9,7 +9,7 @@ function BookingUser() {
   ];
 
   const [tables, setTables] = useState([]);
-  
+
   useEffect(() => {
     interact('.draggable')
       .draggable({
@@ -36,11 +36,43 @@ function BookingUser() {
       target.setAttribute('data-y', y);
     }
   }, []);
-
+  const saveTablesPosition = async () => {
+    try {
+      const response = await fetch('http://localhost:5000/api/saveTablePositions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          tables: tables.map(table => ({
+            id: table.id,
+            seats: table.seats,
+            x_position: table.left,
+            y_position: table.top,
+          }))
+        })
+      });
+  
+      if (response.ok) {
+        alert('Table positions saved successfully!');
+      } else {
+        alert('Failed to save table positions.');
+      }
+    } catch (error) {
+      console.error('Error saving positions:', error);
+      alert('An error occurred while saving positions.');
+    }
+  };
+  
   const handleTableClick = (table) => {
     // Duplicate the table and add it to the tables array
     const newTable = { ...table, id: `drag-${tables.length + 1}`, left: 50, top: 50 };
     setTables([...tables, newTable]);
+  };
+
+  const removeTable = (id) => {
+    // Remove the table with the specified id
+    setTables(tables.filter((table) => table.id !== id));
   };
 
   const TableWithChairs = ({ table }) => {
@@ -126,29 +158,44 @@ function BookingUser() {
   };
 
   const boxStyle = {
-    margin: '-5% 0 0 0rem',
     backgroundColor: 'transparent',
-    padding: '4%',
     touchAction: 'none',
     userSelect: 'none',
     transform: 'translate(0px, 0px)',
-    position: 'absolute', // Added to allow free movement
+    position: 'absolute',
   };
 
   return (
     <div className="bg-amber-30 min-h-screen p-4 relative">
       <div className="container" style={{ border: '2px solid black', width: '800px', height: '600px', position: 'relative' }}>
         <div className="absolute inset-0 overflow-visible">
-          {tables.map((table, index) => (
-            <div 
-              key={table.id} 
-              className="draggable" 
+          {tables.map((table) => (
+            <div
+              key={table.id}
+              className="draggable"
               style={{
                 ...boxStyle,
-                left: `${table.left}px`, 
-                top: `${table.top}px`
+                left: `${table.left}px`,
+                top: `${table.top}px`,
               }}
             >
+              <button
+                onClick={() => removeTable(table.id)}
+                style={{
+                  position: 'absolute',
+                  top: 30,
+                  right: 10,
+                  background: 'red',
+                  color: 'white',
+                  border: 'none',
+                  width: '10px',
+                  height: '10px',
+                  fontSize: '15px',
+                  cursor: 'pointer',
+                }}
+              >
+                -
+              </button>
               <TableWithChairs table={table} />
             </div>
           ))}
@@ -158,9 +205,9 @@ function BookingUser() {
       {/* Table Models Section */}
       <div className="flex justify-center mt-4 space-x-4">
         {templateTables.map((table) => (
-          <div 
-            key={table.id} 
-            onClick={() => handleTableClick(table)} 
+          <div
+            key={table.id}
+            onClick={() => handleTableClick(table)}
             className="cursor-pointer p-4 border rounded-md bg-white shadow-md"
             style={{ width: '150px', height: '160px' }}
           >
@@ -168,6 +215,13 @@ function BookingUser() {
           </div>
         ))}
       </div>
+      <button
+  onClick={saveTablesPosition}
+  className="mt-4 p-2 bg-green-500 text-white rounded"
+>
+  Save Table Positions
+</button>
+
     </div>
   );
 }
