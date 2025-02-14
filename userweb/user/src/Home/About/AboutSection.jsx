@@ -22,7 +22,7 @@ const AboutSection = () => {
 
         <div className="about-grid">
           <div className="about-image">
-            <img src="/logo.png" alt="Camorra Coffee Shop" className="main-image" />
+           
             
             <div className="experience-badge">
               <span className="years">6</span>

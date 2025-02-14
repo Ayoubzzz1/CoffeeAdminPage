@@ -5,6 +5,7 @@ import Menusection from '../Home/Menu/Menusection'
 import Boosection from '../Home/Sectionevent/Boosection'
 import Footer from '../Home/Footer/Footer'
 import AboutSection from '../Home/About/AboutSection'
+import EventPopup from '../Events/EventPopup'
 function Home() {
   return (
     <div>

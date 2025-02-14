@@ -150,11 +150,7 @@ function Drawer() {
           icon: <BookOnlineIcon />,
         },
        
-        {
-          segment: 'bookinguser',
-          title: 'Booking User',
-          icon: <BookOnlineIcon />,
-        },
+      
     
       ]
     },

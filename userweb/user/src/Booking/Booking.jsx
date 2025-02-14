@@ -1,27 +1,69 @@
 import React, { useState } from 'react';
 import { Calendar, Clock, Users, Coffee, ChevronRight, Droplets } from 'lucide-react';
+import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './Booking.css';
 
 function Booking() {
-  const [selectedDate, setSelectedDate] = useState('');
-  const [selectedTime, setSelectedTime] = useState('');
-  const [guests, setGuests] = useState('1');
+  const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    phone: '',
+    date: '',
+    time: '',
+    guests: '1',
+    specialRequests: '',
+  });
+
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState(null);
 
   const timeSlots = [
     '09:00', '09:30', '10:00', '10:30', '11:00', '11:30',
     '12:00', '12:30', '13:00', '13:30', '14:00', '14:30',
-    '15:00', '15:30', '16:00', '16:30', '17:00', '17:30'
+    '15:00', '15:30', '16:00', '16:30', '17:00', '17:30',
+    '18:00', '18:30', '19:00', '19:30', '20:00', '20:30',
+    '21:00', '21:30', '22:00', 
+
   ];
 
-  const handleSubmit = (e) => {
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handleTimeSelect = (time) => {
+    setFormData({ ...formData, time });
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log({ selectedDate, selectedTime, guests });
+    setLoading(true);
+    setMessage(null);
+
+    try {
+      const response = await axios.post('http://localhost:5000/api/bookings', formData);
+      setMessage({ type: 'success', text: 'Booking confirmed successfully!' });
+      setFormData({
+        firstName: '',
+        lastName: '',
+        email: '',
+        phone: '',
+        date: '',
+        time: '',
+        guests: '1',
+        specialRequests: '',
+      });
+    } catch (error) {
+      setMessage({ type: 'error', text: 'Error submitting booking. Try again.' });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <div className="booking-page">
-      {/* Hero Section */}
       <div className="booking-hero">
         <div className="hero-overlay">
           <div className="container">
@@ -35,52 +77,67 @@ function Booking() {
 
       <div className="container py-5">
         <div className="row">
-          {/* Booking Form */}
           <div className="col-lg-8">
             <div className="booking-form-container">
               <h2>Make a Reservation</h2>
-              
+
+              {message && (
+                <div className={`alert alert-${message.type === 'success' ? 'success' : 'danger'}`}>
+                  {message.text}
+                </div>
+              )}
+
               <form onSubmit={handleSubmit} className="booking-form">
-                {/* Personal Details */}
                 <div className="personal-details mb-4">
                   <h3>Personal Details</h3>
                   <div className="row g-3">
                     <div className="col-md-6">
-                      <input 
-                        type="text" 
-                        className="form-control" 
+                      <input
+                        type="text"
+                        className="form-control"
+                        name="firstName"
                         placeholder="First Name"
-                        required 
+                        value={formData.firstName}
+                        onChange={handleChange}
+                        required
                       />
                     </div>
                     <div className="col-md-6">
-                      <input 
-                        type="text" 
-                        className="form-control" 
+                      <input
+                        type="text"
+                        className="form-control"
+                        name="lastName"
                         placeholder="Last Name"
-                        required 
+                        value={formData.lastName}
+                        onChange={handleChange}
+                        required
                       />
                     </div>
                     <div className="col-md-6">
-                      <input 
-                        type="email" 
-                        className="form-control" 
+                      <input
+                        type="email"
+                        className="form-control"
+                        name="email"
                         placeholder="Email"
-                        required 
+                        value={formData.email}
+                        onChange={handleChange}
+                        required
                       />
                     </div>
                     <div className="col-md-6">
-                      <input 
-                        type="tel" 
-                        className="form-control" 
+                      <input
+                        type="tel"
+                        className="form-control"
+                        name="phone"
                         placeholder="Phone Number"
-                        required 
+                        value={formData.phone}
+                        onChange={handleChange}
+                        required
                       />
                     </div>
                   </div>
                 </div>
 
-                {/* Booking Details */}
                 <div className="booking-details mb-4">
                   <h3>Booking Details</h3>
                   <div className="row g-3">
@@ -89,11 +146,12 @@ function Booking() {
                         <span className="input-group-text">
                           <Calendar className="icon" />
                         </span>
-                        <input 
-                          type="date" 
-                          className="form-control" 
-                          value={selectedDate}
-                          onChange={(e) => setSelectedDate(e.target.value)}
+                        <input
+                          type="date"
+                          className="form-control"
+                          name="date"
+                          value={formData.date}
+                          onChange={handleChange}
                           required
                         />
                       </div>
@@ -103,13 +161,13 @@ function Booking() {
                         <span className="input-group-text">
                           <Users className="icon" />
                         </span>
-                        <input 
-                          type="number" 
-                          className="form-control" 
-                          placeholder="Number of Guests"
+                        <input
+                          type="number"
+                          className="form-control"
+                          name="guests"
                           min="1"
-                          value={guests}
-                          onChange={(e) => setGuests(e.target.value)}
+                          value={formData.guests}
+                          onChange={handleChange}
                           required
                         />
                       </div>
@@ -117,7 +175,6 @@ function Booking() {
                   </div>
                 </div>
 
-                {/* Time Slots */}
                 <div className="time-slots mb-4">
                   <h3>Preferred Arrival Time</h3>
                   <div className="time-grid">
@@ -125,8 +182,8 @@ function Booking() {
                       <button
                         key={time}
                         type="button"
-                        className={`time-slot ${selectedTime === time ? 'selected' : ''}`}
-                        onClick={() => setSelectedTime(time)}
+                        className={`time-slot ${formData.time === time ? 'selected' : ''}`}
+                        onClick={() => handleTimeSelect(time)}
                       >
                         <Clock className="icon" />
                         {time}
@@ -135,13 +192,15 @@ function Booking() {
                   </div>
                 </div>
 
-                {/* Special Requests */}
                 <div className="special-requests mb-4">
                   <h3>Special Requests</h3>
-                  <textarea 
-                    className="form-control" 
-                    rows="3" 
+                  <textarea
+                    className="form-control"
+                    name="specialRequests"
+                    rows="3"
                     placeholder="Any special requests or preferences?"
+                    value={formData.specialRequests}
+                    onChange={handleChange}
                   ></textarea>
                 </div>
 
@@ -150,15 +209,14 @@ function Booking() {
                   <span>Please note: Each booking requires the purchase of a 1L bottle of water.</span>
                 </div>
 
-                <button type="submit" className="btn btn-primary booking-submit">
-                  Confirm Booking
+                <button type="submit" className="btn btn-primary booking-submit" disabled={loading}>
+                  {loading ? 'Submitting...' : 'Confirm Booking'}
                   <ChevronRight className="icon" />
                 </button>
               </form>
             </div>
           </div>
 
-          {/* Sidebar */}
           <div className="col-lg-4">
             <div className="booking-sidebar">
               <div className="info-card">

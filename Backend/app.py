@@ -1,5 +1,6 @@
 import base64
 from datetime import datetime
+from sqlite3 import Cursor
 import MySQLdb
 from flask import Flask, jsonify, request
 from flask_mysqldb import MySQL
@@ -10,7 +11,7 @@ from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy import text
 app = Flask(__name__)
 app.config['MAX_CONTENT_LENGTH'] = 10 * 1024 * 1024  # 10 MB
-CORS(app, origins="http://localhost:5176", methods=["GET", "POST", "DELETE", "PUT", "OPTIONS"])
+CORS(app, origins="http://localhost:*", methods=["GET", "POST", "DELETE", "PUT", "OPTIONS"])
 CATEGORIES_FILE = os.path.join(os.getcwd(), 'categories.json')
 # Database configuration
 app.config['MYSQL_HOST'] = 'localhost'
@@ -100,52 +101,6 @@ def add_category():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
-@app.route('/api/saveTablePositions', methods=['POST'])
-def save_table_positions():
-    data = request.json
-    tables = data.get('tables')
-
-    cursor = mysql.connection.cursor()
-
-    for table in tables:
-        cursor.execute("""
-            INSERT INTO table_positions (table_id, seats, x_position, y_position)
-            VALUES (%s, %s, %s, %s)
-        """, (table['id'], table['seats'], table['x_position'], table['y_position']))
-    
-    mysql.connection.commit()
-    cursor.close()
-
-    return jsonify({'message': 'Table positions saved successfully'}), 200
-
-    
-    conn.commit()
-    cursor.close()
-    conn.close()
-
-    return jsonify({'message': 'Table positions saved successfully'}), 200
-
-
-@app.route('/api/tablePositions', methods=['GET'])
-def get_table_positions():
-    try:
-        # Retrieve table positions from the database
-        table_positions = TablePosition.query.all() # type: ignore
-        
-        # Prepare a list of positions to return
-        positions = []
-        for position in table_positions:
-            positions.append({
-                'id': position.id,
-                'table_id': position.table_id,
-                'seats': position.seats,
-                'x_position': position.x_position,
-                'y_position': position.y_position,
-            })
-        
-        return jsonify(positions)
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500
 
 
 
@@ -268,9 +223,73 @@ def get_attendance(id):
 
 
 
+@app.route('/api/bookings', methods=['POST'])
+def create_booking():
+    try:
+        data = request.json
+
+        # Validate input fields
+        required_fields = ['firstName', 'lastName', 'email', 'phone', 'date', 'time', 'guests']
+        for field in required_fields:
+            if field not in data or not data[field]:
+                return jsonify({'error': f'{field} is required'}), 400
+
+        sql = """
+            INSERT INTO bookings (first_name, last_name, email, phone, booking_date, booking_time, guests, special_requests)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+        """
+        values = (
+            data['firstName'],
+            data['lastName'],
+            data['email'],
+            data['phone'],
+            data['date'],
+            data['time'],
+            data['guests'],
+            data.get('specialRequests', '')
+        )
+
+        cursor = mysql.connection.cursor()
+        cursor.execute(sql, values)
+        mysql.connection.commit()
+        booking_id = cursor.lastrowid  # Get inserted booking ID
+        cursor.close()
+
+        return jsonify({"message": "Booking created successfully!", "booking_id": booking_id}), 201
+
+    except MySQLdb.Error as e:
+        return jsonify({"error": f"Database error: {str(e)}"}), 500
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 
+@app.route('/api/bookings', methods=['GET'])
+def get_all_bookings():
+    try:
+        cursor = mysql.connection.cursor()
+        cursor.execute("SELECT * FROM bookings")
+        bookings = cursor.fetchall()
+        cursor.close()
 
+        booking_list = []
+        for booking in bookings:
+            booking_list.append({
+                "id": booking[0],
+                "first_name": booking[1],
+                "last_name": booking[2],
+                "email": booking[3],
+                "phone": booking[4],
+                "booking_date": booking[5].strftime('%Y-%m-%d'),
+                "booking_time": str(booking[6]),
+                "guests": booking[7],
+                "special_requests": booking[8]
+            })
 
+        return jsonify(booking_list), 200
+
+    except MySQLdb.Error as e:
+        return jsonify({"error": f"Database error: {str(e)}"}), 500
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 if __name__ == '__main__':
     app.run(debug=True)

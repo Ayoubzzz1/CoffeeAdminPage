@@ -1,0 +1,109 @@
+.event-popup-container {
+    position: fixed;
+    top: 0;
+    right: 20px;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transform-origin: top center;
+    animation: swing 3s infinite ease-in-out;
+  }
+  
+  .rope {
+    width: 2px;
+    height: 50px;
+    background-color: #8b4513; /* Brown color for the rope */
+  }
+  
+  .event-popup {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    animation: fadeIn 0.5s ease-in-out;
+    transform-origin: top center;
+    max-width: 300px;
+    text-align: center;
+  }
+  
+  .event-image img {
+    width: 250px; /* Adjust the width of the image */
+    height: auto; /* Maintain aspect ratio */
+    border-radius: 10px;
+    margin-bottom: 15px;
+  }
+  
+  .event-popup h2 {
+    margin: 0 0 10px 0;
+    color: #ff6b81; /* Pinkish color for the heading */
+  }
+  
+  .event-details {
+    text-align: left;
+    margin-bottom: 15px;
+  }
+  
+  .event-details p {
+    margin: 5px 0;
+    color: #333;
+    font-size: 14px;
+  }
+  
+  .event-popup button {
+    background-color: #ff4757; /* Red color for the button */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .event-popup button:hover {
+    background-color: #ff6b81; /* Lighter red on hover */
+  }
+  
+  /* Crumpling Animation */
+  .event-popup-container.crumple .event-popup {
+    animation: crumple 1s forwards;
+  }
+  
+  /* Swing Animation */
+  @keyframes swing {
+    0%,
+    100% {
+      transform: rotate(-10deg);
+    }
+    50% {
+      transform: rotate(10deg);
+    }
+  }
+  
+  /* Fade-in Animation */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* Crumple Animation */
+  @keyframes crumple {
+    0% {
+      transform: scale(1) rotate(0deg);
+      opacity: 1;
+    }
+    50% {
+      transform: scale(0.8) rotate(10deg);
+      opacity: 0.8;
+    }
+    100% {
+      transform: scale(0) rotate(-45deg);
+      opacity: 0;
+    }
+  }

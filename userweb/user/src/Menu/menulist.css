@@ -1,0 +1,153 @@
+/* General page layout */
+.custom-menu-page {
+    background-color: #fff8e7; /* Matches the booking-page background */
+    font-family: 'Arial', sans-serif;
+}
+
+.custom-menu-hero {
+    position: relative;
+    background-color: #3c2415; /* Matches booking-hero background */
+    background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('your-hero-image.jpg');
+    background-size: cover;
+    background-position: center;
+    padding: 100px 0;
+    color: white;
+}
+
+.custom-hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.custom-menu-page .container {
+    z-index: 1;
+}
+
+h1 {
+    font-size: 3.5rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
+
+h2 {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+}
+
+.custom-menu-list {
+    padding: 20px;
+    background-color: white; /* Matches the content area */
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1); /* Subtle shadow for depth */
+}
+
+.custom-menu-item {
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+}
+
+.custom-menu-item .custom-menu-icon {
+    font-size: 3rem;
+    margin-right: 15px;
+    color: #875234; /* Matches the icon color in booking-page */
+}
+
+.custom-menu-item h4 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.custom-price {
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: #875234; /* Price color matches booking-page */
+}
+
+.custom-menu-item p {
+    font-size: 1rem;
+    color: #4a4a4a; /* Darker text color for readability */
+}
+
+/* Sidebar styles */
+.custom-menu-sidebar {
+    padding: 20px;
+}
+
+.custom-info-card {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.custom-info-card h3 {
+    font-size: 1.8rem;
+    color: #3c2415; /* Consistent color with booking-page */
+    margin-bottom: 15px;
+}
+
+.custom-info-card .custom-info-content p {
+    font-size: 1rem;
+    color: #4a4a4a;
+    display: flex;
+    align-items: center;
+}
+
+.custom-info-card .custom-icon {
+    margin-right: 10px;
+    color: #27ae60; /* Consistent with icon color in booking-page */
+}
+
+.custom-policy-info h4 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+}
+
+.custom-policy-info ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.custom-policy-info li {
+    font-size: 1rem;
+    color: #4a4a4a;
+}
+
+.custom-policy-info li::before {
+    content: "• ";
+    color: #875234; /* Matches bullet color in booking-page */
+}
+
+@media (max-width: 767px) {
+    .custom-menu-hero {
+        padding: 60px 0;
+    }
+
+    h1 {
+        font-size: 2.5rem;
+    }
+
+    .custom-menu-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .custom-menu-item .custom-menu-icon {
+        margin-right: 0;
+        margin-bottom: 10px;
+    }
+
+    .custom-menu-sidebar {
+        margin-top: 30px;
+    }
+}
