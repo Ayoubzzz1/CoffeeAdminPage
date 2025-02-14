@@ -1,0 +1,244 @@
+/* ViewCard.css */
+.view-card-container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+  }
+  
+  /* Loading and Error States */
+  .loading-container, .error-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 80vh;
+  }
+  
+  .spinner {
+    border: 4px solid rgba(0, 0, 0, 0.1);
+    border-left-color: #007bff;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+  }
+  
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+  
+  .loading-text {
+    margin-top: 1rem;
+    font-size: 1.2rem;
+    color: #666;
+  }
+  
+  .error-message {
+    color: #dc3545;
+    font-size: 1.2rem;
+  }
+  
+  /* Profile Card */
+  .profile-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+    overflow: hidden;
+  }
+  
+  .profile-content {
+    padding: 2rem;
+  }
+  
+  .profile-header h2 {
+    color: #2c3e50;
+    margin-bottom: 1.5rem;
+    font-size: 2rem;
+  }
+  
+  .profile-details {
+    display: flex;
+    justify-content: space-between;
+    gap: 2rem;
+  }
+  
+  .details-left {
+    flex: 1;
+  }
+  
+  .detail-item {
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+  }
+  
+  .detail-label {
+    font-weight: 600;
+    color: #666;
+    width: 100px;
+  }
+  
+  .detail-value {
+    color: #2c3e50;
+  }
+  
+  .profile-image {
+    width: 200px;
+    height: 200px;
+  }
+  
+  .profile-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+    transition: transform 0.3s ease;
+  }
+  
+  .profile-image img:hover {
+    transform: scale(1.05);
+  }
+  
+  /* Calendar Card */
+  .calendar-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 2rem;
+    margin-bottom: 2rem;
+  }
+  
+  .calendar-card h3 {
+    color: #2c3e50;
+    margin-bottom: 1.5rem;
+  }
+  
+  /* Override react-calendar default styles */
+  .react-calendar {
+    width: 100% !important;
+    border: none !important;
+    font-family: inherit !important;
+  }
+  
+  .calendar-tile-present {
+    background-color: #28a745 !important;
+    color: white !important;
+    border-radius: 4px;
+  }
+  
+  .calendar-tile-absent {
+    background-color: #dc3545 !important;
+    color: white !important;
+    border-radius: 4px;
+  }
+  
+  /* Attendance Card */
+  .attendance-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 2rem;
+  }
+  
+  .attendance-card h3 {
+    color: #2c3e50;
+    margin-bottom: 1.5rem;
+  }
+  
+  .table-container {
+    overflow-x: auto;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 2rem;
+  }
+  
+  th {
+    background-color: #f8f9fa;
+    padding: 1rem;
+    text-align: left;
+    font-weight: 600;
+    color: #2c3e50;
+  }
+  
+  td {
+    padding: 1rem;
+    border-bottom: 1px solid #e9ecef;
+  }
+  
+  .status-badge {
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+  
+  .status-badge.present {
+    background-color: #28a745;
+    color: white;
+  }
+  
+  .status-badge.absent {
+    background-color: #dc3545;
+    color: white;
+  }
+  
+  .no-records {
+    text-align: center;
+    color: #6c757d;
+    font-style: italic;
+  }
+  
+  /* Salary Summary */
+  .salary-summary {
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid #e9ecef;
+  }
+  
+  .salary-details {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1rem;
+  }
+  
+  .salary-item {
+    background-color: #f8f9fa;
+    padding: 1.5rem;
+    border-radius: 8px;
+  }
+  
+  .salary-label {
+    display: block;
+    font-weight: 600;
+    color: #666;
+    margin-bottom: 0.5rem;
+  }
+  
+  .salary-value {
+    display: block;
+    font-size: 1.25rem;
+    color: #2c3e50;
+    font-weight: 600;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .profile-details {
+      flex-direction: column;
+    }
+  
+    .profile-image {
+      width: 100%;
+      max-width: 300px;
+      margin: 0 auto;
+    }
+  
+    .salary-details {
+      grid-template-columns: 1fr;
+    }
+  }

@@ -228,6 +228,42 @@ def save_attendance():
         return jsonify({'error': str(e)}), 500
     
 
+@app.route('/api/personnel/<int:id>', methods=['GET'])
+def get_personnel(id):
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT id, first_name, last_name, job_title, phone, age, gender, salary_per_day, total_salary, image FROM personnel WHERE id = %s", (id,))
+    person = cur.fetchone()
+    cur.close()
+
+    if person:
+        person_dict = {
+            "id": person[0],
+            "firstName": person[1],
+            "lastName": person[2],
+            "jobTitle": person[3],
+            "phone": person[4],
+            "age": person[5],
+            "gender": person[6],
+            "salary_per_day": person[7],
+            "total_salary": person[8],
+            "image": person[9].decode('utf-8') if person[9] else None
+        }
+        return jsonify(person_dict), 200
+    return jsonify({"error": "Person not found"}), 404
+
+@app.route('/api/attendance/<int:id>', methods=['GET'])
+def get_attendance(id):
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT attendance_date, status FROM attendance WHERE personnel_id = %s", (id,))
+    attendance_records = cur.fetchall()
+    cur.close()
+
+    attendance_list = [
+        {"attendance_date": record[0].strftime('%Y-%m-%d'), "status": record[1]}
+        for record in attendance_records
+    ]
+    
+    return jsonify(attendance_list), 200
 
 
 

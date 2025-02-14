@@ -10,6 +10,7 @@ import Menuitems from './Menu/Menuitems';
 import Menushow from './Menu/Menushow';
 import Managemenu from './Menu/Managemenu';
 import Personneldate from './Personnel/Personneldate';
+import Events from './Events/Events';
 import Login from './Auth/Login';
 function PageRoutes() {
   return (
@@ -30,6 +31,10 @@ function PageRoutes() {
       <Route path="/menu/addmenu" element={<Menuitems />} />
       <Route path="/menu/menuitems" element={<Menushow />} />
       <Route path="/menu/managemenu" element={<Managemenu />} />
+      <Route path="/menu/managemenu" element={<Managemenu />} />
+      <Route path="/event" element={<Events />} />
+
+
 
 
 

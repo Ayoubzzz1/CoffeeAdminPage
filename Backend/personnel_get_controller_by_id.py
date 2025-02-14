@@ -32,9 +32,10 @@ class PersonnelGetControllerById:
                 'phone': person[4],
                 'age': person[5],
                 'gender': person[6],
+                'total_salary': person[8],
+                'salary_per_day': person[9],
                 'imageUrl': image  # Now the image is a base64 string
             }
-
             return jsonify(personnel_data), 200
         except Exception as e:
             return jsonify({'message': 'Error fetching personnel data', 'error': str(e)}), 500

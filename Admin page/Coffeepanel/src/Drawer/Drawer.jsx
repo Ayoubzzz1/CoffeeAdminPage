@@ -24,6 +24,7 @@ import ChairIcon from '@mui/icons-material/Chair';
 import BookOnlineIcon from '@mui/icons-material/BookOnline';
 import PermContactCalendarIcon from '@mui/icons-material/PermContactCalendar';
 import PersonSearchIcon from '@mui/icons-material/PersonSearch';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 // Define the theme
 const demoTheme = extendTheme({
   colorSchemes: { light: true, dark: true },
@@ -65,25 +66,9 @@ function Drawer() {
     },
     {
       kind: 'header',
-      title: 'Analytics',
+      title: 'Page Handling',
     },
-    {
-      segment: 'reports',
-      title: 'Reports',
-      icon: <BarChartIcon />,
-      children: [
-        {
-          segment: 'sales',
-          title: 'Sales',
-          icon: <DescriptionIcon />,
-        },
-        {
-          segment: 'traffic',
-          title: 'Traffic',
-          icon: <DescriptionIcon />,
-        },
-      ],
-    },
+  
     {
       segment: 'personnel',
       title: 'Personnel',
@@ -173,8 +158,38 @@ function Drawer() {
     
       ]
     },
+    {
+      segment: 'event',
+      title: 'Event',
+      icon: <CalendarMonthIcon />,
+    },
   ];
 
+
+  const [session, setSession] = React.useState({
+    user: {
+      name: 'Bharat Kashyap',
+      email: 'bharatkashyap@outlook.com',
+      image: 'https://avatars.githubusercontent.com/u/19550456',
+    },
+  });
+
+  const authentication = React.useMemo(() => {
+    return {
+      signIn: () => {
+        setSession({
+          user: {
+            name: 'Bharat Kashyap',
+            email: 'bharatkashyap@outlook.com',
+            image: 'https://avatars.githubusercontent.com/u/19550456',
+          },
+        });
+      },
+      signOut: () => {
+        setSession(null);
+      },
+    };
+  }, []);
   const router = React.useMemo(() => ({
     pathname: location.pathname,
     searchParams: new URLSearchParams(location.search),
@@ -185,6 +200,16 @@ function Drawer() {
     <AppProvider
       navigation={NAVIGATION}
       router={router}
+      branding={{
+        logo: <img src="/logo.png" alt="MUI logo" />,
+        title: 'CAMOFFA',
+        homeUrl: 'hello',
+
+      }}
+      session={session}
+      authentication={authentication}
+      
+      theme={demoTheme}
      
     >
       <DashboardLayout>
