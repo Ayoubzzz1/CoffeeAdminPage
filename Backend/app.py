@@ -10,7 +10,7 @@ from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy import text
 app = Flask(__name__)
 app.config['MAX_CONTENT_LENGTH'] = 10 * 1024 * 1024  # 10 MB
-CORS(app, origins="http://localhost:5173", methods=["GET", "POST", "DELETE", "PUT", "OPTIONS"])
+CORS(app, origins="http://localhost:5176", methods=["GET", "POST", "DELETE", "PUT", "OPTIONS"])
 CATEGORIES_FILE = os.path.join(os.getcwd(), 'categories.json')
 # Database configuration
 app.config['MYSQL_HOST'] = 'localhost'

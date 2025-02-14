@@ -1,15 +1,21 @@
-import { useState } from 'preact/hooks'
-import preactLogo from './assets/preact.svg'
-import viteLogo from '/vite.svg'
-import './app.css'
-import Home from './Pages/Home'
+import { h } from 'preact';
+import { Router } from 'preact-router';
+import Home from './Pages/Home';
+import About from './About/About';
+import Booking from './Booking/Booking';
+import Menunav from './Home/Navbar/Menunav';
+import Footer from './Home/Footer/Footer';
 
 export function App() {
-  const [count, setCount] = useState(0)
-
   return (
     <>
-        <Home/>
-   </>
-  )
+      <Menunav />
+      <Router>
+        <Home path="/" />
+        <About path="/about" />
+        <Booking path="/booking" />
+      </Router>
+      <Footer />
+    </>
+  );
 }

@@ -1,7 +1,7 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './hero.css';
-
+import { Link } from 'preact-router';
 function Hero() {
   return (
     <div className="hero-section">
@@ -25,9 +25,9 @@ function Hero() {
               <a href="#menu" className="btn btn-danger btn-lg px-4 fw-semibold">
                 View Menu
               </a>
-              <a href="#order" className="btn btn-outline-light btn-lg px-4">
+              <Link href="booking" className="btn btn-outline-light btn-lg px-4">
                 Book Now
-              </a>
+              </Link>
             </div>
             <div className="mt-5 d-flex gap-4 animate-features">
               <div className="feature-item">

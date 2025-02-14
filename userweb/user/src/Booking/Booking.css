@@ -1,0 +1,186 @@
+.booking-page {
+    background-color: #fff8e7;
+    min-height: 100vh;
+  }
+  
+  /* Hero Section */
+  .booking-hero {
+    height: 300px;
+    background-color: #3c2415;
+    background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('/api/placeholder/1920/300');
+    background-size: cover;
+    background-position: center;
+    position: relative;
+  }
+  
+  .hero-overlay {
+    position: absolute;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.4);
+    display: flex;
+    align-items: center;
+  }
+  
+  .hero-content {
+    color: white;
+    text-align: center;
+  }
+  
+  .hero-content h1 {
+    font-size: 3.5rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+  }
+  
+  .hero-content p {
+    font-size: 1.5rem;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+  }
+  
+  /* Booking Form */
+  .booking-form-container {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  }
+  
+  .booking-form-container h2 {
+    color: #3c2415;
+    margin-bottom: 2rem;
+    font-weight: bold;
+  }
+  
+  .booking-form-container h3 {
+    color: #3c2415;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+  
+  .booking-form .icon {
+    width: 20px;
+    height: 20px;
+    color: #875234;
+  }
+  
+  /* Time Slots */
+  .time-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 1rem;
+  }
+  
+  .time-slot {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+  }
+  
+  .time-slot:hover {
+    background-color: #f8f9fa;
+    border-color: #875234;
+  }
+  
+  .time-slot.selected {
+    background-color: #875234;
+    color: white;
+    border-color: #875234;
+  }
+  
+  .time-slot.selected .icon {
+    color: white;
+  }
+  
+  /* Sidebar */
+  .booking-sidebar {
+    position: sticky;
+    top: 2rem;
+  }
+  
+  .info-card {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  }
+  
+  .info-card h3 {
+    color: #3c2415;
+    margin-bottom: 1.5rem;
+    font-weight: bold;
+  }
+  
+  .info-content {
+    margin-bottom: 1.5rem;
+  }
+  
+  .info-content p {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+    color: #4a4a4a;
+  }
+  
+  .policy-info h4 {
+    color: #3c2415;
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+  }
+  
+  .policy-info ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .policy-info li {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #eee;
+    color: #4a4a4a;
+  }
+  
+  .policy-info li:last-child {
+    border-bottom: none;
+  }
+  
+  /* Submit Button */
+  .booking-submit {
+    background-color: #875234;
+    border: none;
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+  }
+  
+  .booking-submit:hover {
+    background-color: #3c2415;
+    transform: translateY(-2px);
+  }
+  
+  @media (max-width: 768px) {
+    .hero-content h1 {
+      font-size: 2.5rem;
+    }
+    
+    .hero-content p {
+      font-size: 1.2rem;
+    }
+    
+    .time-grid {
+      grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    }
+    
+    .booking-sidebar {
+      margin-top: 2rem;
+      position: static;
+    }
+  }

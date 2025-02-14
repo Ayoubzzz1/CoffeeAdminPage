@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './sectionb.css';
+import { Link } from 'preact-router';
 
 function BookingSection() {
   const [activeCard, setActiveCard] = useState(null);
@@ -71,10 +72,10 @@ function BookingSection() {
                 </div>
 
                 <div className="card-actions">
-                  <button className="book-now-btn">
+                  <Link href="booking"  className="book-now-btn">
                     Book Now
                     <span className="btn-arrow">→</span>
-                  </button>
+                  </Link>
                   <button className="details-btn">View Details</button>
                 </div>
               </div>

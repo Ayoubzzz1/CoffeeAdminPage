@@ -8,12 +8,10 @@ import AboutSection from '../Home/About/AboutSection'
 function Home() {
   return (
     <div>
-      <Menunav/>
       <Hero/>
       <AboutSection/>
       <Menusection/>
       <Boosection/>
-      <Footer/>
     </div>
   )
 }
