@@ -9,6 +9,7 @@ import EventPopup from '../Events/EventPopup'
 function Home() {
   return (
     <div>
+      
       <Hero/>
       <AboutSection/>
       <Menusection/>

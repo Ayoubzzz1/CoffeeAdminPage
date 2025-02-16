@@ -1,214 +1,122 @@
 /* Add this to hero.css */
 .hero-section {
-    position: relative;
-    min-height: 100vh;
-    background-image: url('/api/placeholder/1920/1080');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    overflow: hidden;
+  position: relative;
+  min-height: 100vh;
+  background-image: url('/tt.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  overflow: hidden;
+}
+
+.hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    135deg,
+    rgba(0, 0, 0, 0.95) 0%,
+    rgba(220, 20, 20, 0.7) 100%
+  );
+}
+
+.feature-item {
+  text-align: center;
+}
+
+.feature-icon {
+  font-size: 2rem;
+  background: rgba(220, 20, 20, 0.2);
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  backdrop-filter: blur(5px);
+  border: 1px solid rgba(220, 20, 20, 0.3);
+}
+
+.feature-text {
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+/* Animations */
+@keyframes slideUp {
+  from {
+    transform: translateY(30px);
+    opacity: 0;
   }
-  
-  .hero-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(
-      135deg,
-      rgba(0, 0, 0, 0.95) 0%,
-      rgba(220, 20, 20, 0.7) 100%
-    );
+  to {
+    transform: translateY(0);
+    opacity: 1;
   }
-  
-  .feature-item {
+}
+
+.animate-badge {
+  animation: slideUp 0.6s ease-out forwards;
+}
+
+.animate-title {
+  opacity: 0;
+  animation: slideUp 0.6s ease-out 0.2s forwards;
+}
+
+.animate-text {
+  opacity: 0;
+  animation: slideUp 0.6s ease-out 0.4s forwards;
+}
+
+.animate-buttons {
+  opacity: 0;
+  animation: slideUp 0.6s ease-out 0.6s forwards;
+}
+
+.animate-features {
+  opacity: 0;
+  animation: slideUp 0.6s ease-out 0.8s forwards;
+}
+
+/* Button Hover Effects */
+.btn-danger {
+  background-color: #dc1414;
+  border-color: #dc1414;
+}
+
+.btn-danger:hover {
+  background-color: #c01212;
+  border-color: #c01212;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(220, 20, 20, 0.3);
+}
+
+.btn-outline-light:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(255, 255, 255, 0.2);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .hero-section {
     text-align: center;
   }
   
-  .feature-icon {
-    font-size: 2rem;
-    background: rgba(220, 20, 20, 0.2);
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto;
-    backdrop-filter: blur(5px);
-    border: 1px solid rgba(220, 20, 20, 0.3);
-  }
-  
-  .feature-text {
-    font-size: 0.9rem;
-    font-weight: 500;
-  }
-  
-  /* Animations */
-  @keyframes slideUp {
-    from {
-      transform: translateY(30px);
-      opacity: 0;
-    }
-    to {
-      transform: translateY(0);
-      opacity: 1;
-    }
-  }
-  
-  .animate-badge {
-    animation: slideUp 0.6s ease-out forwards;
-  }
-  
-  .animate-title {
-    opacity: 0;
-    animation: slideUp 0.6s ease-out 0.2s forwards;
-  }
-  
-  .animate-text {
-    opacity: 0;
-    animation: slideUp 0.6s ease-out 0.4s forwards;
-  }
-  
-  .animate-buttons {
-    opacity: 0;
-    animation: slideUp 0.6s ease-out 0.6s forwards;
-  }
-  
   .animate-features {
-    opacity: 0;
-    animation: slideUp 0.6s ease-out 0.8s forwards;
-  }
-  
-  /* Button Hover Effects */
-  .btn-danger {
-    background-color: #dc1414;
-    border-color: #dc1414;
-  }
-  
-  .btn-danger:hover {
-    background-color: #c01212;
-    border-color: #c01212;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(220, 20, 20, 0.3);
-  }
-  
-  .btn-outline-light:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(255, 255, 255, 0.2);
-  }
-  
-  /* Responsive Adjustments */
-  @media (max-width: 768px) {
-    .hero-section {
-      text-align: center;
-    }
-    
-    .animate-features {
-      justify-content: center;
-    }
-    
-    .d-flex.gap-3 {
-      justify-content: center;
-    }
-  }
-  .coffee-image-container {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    display: flex;
     justify-content: center;
-    align-items: center;
   }
   
-  .floating-coffee {
-    width: 80%;
-    max-width: 500px;
-    height: auto;
-    animation: floatAnimation 6s ease-in-out infinite;
-    filter: drop-shadow(0 10px 20px rgba(220, 20, 20, 0.3));
-    transform-origin: center center;
+  .d-flex.gap-3 {
+    justify-content: center;
   }
+}
+
+
+.hero-image {
+  max-width: 100%;
+  width: 65%;
   
-  /* Floating Animation */
-  @keyframes floatAnimation {
-    0% {
-      transform: translateY(0) rotate(0deg);
-    }
-    25% {
-      transform: translateY(-15px) rotate(2deg);
-    }
-    75% {
-      transform: translateY(15px) rotate(-2deg);
-    }
-    100% {
-      transform: translateY(0) rotate(0deg);
-    }
-  }
-  
-  /* Steam Animation */
-  .coffee-steam {
-    position: absolute;
-    top: 20%;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 60px;
-    height: 100px;
-    z-index: 1;
-  }
-  
-  .coffee-steam span {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 3px;
-    height: 40px;
-    background: rgba(255, 255, 255, 0.4);
-    border-radius: 3px;
-  }
-  
-  .coffee-steam span:nth-child(1) {
-    left: 10px;
-    animation: steam 3s infinite ease-in-out;
-    animation-delay: 0.2s;
-  }
-  
-  .coffee-steam span:nth-child(2) {
-    left: 25px;
-    animation: steam 3.2s infinite ease-in-out;
-    animation-delay: 0.4s;
-  }
-  
-  .coffee-steam span:nth-child(3) {
-    left: 40px;
-    animation: steam 2.8s infinite ease-in-out;
-    animation-delay: 0.6s;
-  }
-  
-  @keyframes steam {
-    0% {
-      height: 0;
-      opacity: 0;
-    }
-    40% {
-      height: 40px;
-      opacity: 0.5;
-    }
-    80% {
-      height: 60px;
-      opacity: 0.2;
-    }
-    100% {
-      height: 80px;
-      opacity: 0;
-    }
-  }
-  
-  /* Responsive adjustments */
-  @media (max-width: 991px) {
-    .coffee-image-container {
-      display: none;
-    }
-  }
-  
+}

@@ -7,7 +7,7 @@ function About() {
   return (
     <div className="about-page">
       {/* Hero Section */}
-      <div className="hero-section">
+      <div className="heroo-section">
         <div className="hero-overlay">
           <div className="container">
             <div className="hero-content text-center">

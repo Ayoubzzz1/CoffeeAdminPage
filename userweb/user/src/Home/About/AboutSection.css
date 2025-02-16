@@ -1,7 +1,6 @@
 .about-section {
     position: relative;
     padding: 100px 0;
-    background: #fff;
     overflow: hidden;
   }
   
@@ -11,7 +10,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.7) 0%, rgba(236, 206, 141, 0.7) 100%);
     z-index: 0;
   }
   
@@ -265,9 +264,7 @@
       grid-template-columns: 1fr;
     }
   
-    .about-image {
-      height: 400px;
-    }
+  
   
     .timeline-grid {
       grid-template-columns: repeat(2, 1fr);
@@ -292,10 +289,7 @@
       display: none;
     }
   
-    .floating-image {
-      width: 150px;
-      height: 150px;
-    }
+   
   }
   
   /* Hover Effects */

@@ -2,6 +2,7 @@ import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './hero.css';
 import { Link } from 'preact-router';
+
 function Hero() {
   return (
     <div className="hero-section">
@@ -44,21 +45,9 @@ function Hero() {
               </div>
             </div>
           </div>
-          
           {/* Right Image */}
-          <div className="col-lg-6 d-none d-lg-block position-relative">
-            <div className="coffee-image-container">
-              <img 
-                src="/cover.png" 
-                alt="Elegant Coffee Cup" 
-                className="floating-coffee"
-              />
-              <div className="coffee-steam">
-                <span></span>
-                <span></span>
-                <span></span>
-              </div>
-            </div>
+          <div className="col-lg-6 d-flex justify-content-center">
+            <img src="/hero1.png" alt="Coffee" className="hero-image" />
           </div>
         </div>
       </div>
