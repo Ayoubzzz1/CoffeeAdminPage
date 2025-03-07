@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import './Menusec.css';
+import './menusec.css';
 
 const Menusection = () => {
   const [menuItems, setMenuItems] = useState([]);
